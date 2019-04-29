@@ -25,7 +25,9 @@ $config['providers'] = [
 
 $config['$root$']['block']['userProfilePayment'] = array(
     'action' => array(
-        'payment'
+        'payment' => [
+            '{settings}'
+        ]
     ),
     'blocks' => array(
         'left' => array(

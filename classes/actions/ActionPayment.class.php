@@ -35,20 +35,31 @@ class PluginPayment_ActionPayment extends ActionPlugin{
     protected function RegisterEvent() {
         
         $this->AddEventPreg( '/^[\w_-]+$/i', '/^bills$/i', '/^(paid|not_paid)?$/i', ['EventBills', 'settings']);
+        $this->AddEventPreg( '/^bill([\d]+)$/i', '/^choose-provider$/i', 'EventChooseProvider');
     }
     
     public function EventBills() {
+        $sState = $this->GetParam(1, 'not_paid');
+        
         if(!$oUserProfile = $this->User_GetUserByLogin($this->sCurrentEvent)){
             return $this->EventNotFound();
         }
         
-        $aFilter = [
-            "date_payment" => null
-        ];
+        if($sState == 'no_paid'){
+            $aFilter = [
+                "date_payment" => null
+            ];
+        }elseif($sState == 'paid'){
+            $aFilter = [
+                '#where' => [
+                    't.date_payment IS NOT NULL AND 1=?d' => [1]
+                ]
+            ];
+        }
         
         $aFilter['user_id'] = $oUserProfile->getId();
         
-        $aBills = $this->PluginPayment_Payment_GetBillByFilter($aFilter);
+        $aBills = $this->PluginPayment_Payment_GetBillItemsByFilter($aFilter);
         
         $iCountPaid = $this->PluginPayment_Payment_GetCountFromBillByFilter([
             '#where' => [
@@ -62,7 +73,12 @@ class PluginPayment_ActionPayment extends ActionPlugin{
         $this->Viewer_Assign('iCountPaid', $iCountPaid);
         $this->Viewer_Assign('iCountNotPaid', $iCountNotPaid);
         $this->Viewer_Assign('aBills', $aBills);
+        $this->Viewer_Assign('sState', $sState);
         $this->Viewer_Assign('oUserProfile', $oUserProfile);
     }
     
+    
+    public function EventChooseProvider() {
+        $this->SetTemplateAction('choose-provider');
+    }
 }

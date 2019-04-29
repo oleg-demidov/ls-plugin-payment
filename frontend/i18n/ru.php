@@ -14,5 +14,8 @@ return [
     ],
     'nav_profile' => [
         'text' => 'Счета'
+    ],
+    'choose_provider' => [
+        'title' => 'Выбор варианта оплаты'
     ]
 ];

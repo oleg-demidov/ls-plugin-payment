@@ -23,7 +23,7 @@ class PluginPayment_HookMenuProfile extends Hook{
             'name' => 'bills',
             'title' => 'plugin.payment.nav_profile.text',
             'url' => 'payment/'.$oUser->getLogin().'/bills',
-            'count' => $this->PluginPayment_Payment_GetCountFromBillByFilter(['user_id' => $oUser->getId()])
+            'count' => $this->PluginPayment_Payment_GetCountFromBillByFilter(['user_id' => $oUser->getId(), "date_payment" => null])
         ]);
         
         $oMenuProfile->appendChild($oItem);

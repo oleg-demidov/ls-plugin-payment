@@ -15,18 +15,18 @@
             count => $iCountNotPaid,
             text => $aLang.plugin.payment.bills.states.not_paid,
             name => 'not_paid',
-            url  => {router page="payments/{$oUserProfile->getLogin()}/bills/not_paid"}
+            url  => {router page="payment/{$oUserProfile->getLogin()}/bills/not_paid"}
         ],
         [
             count => $iCountPaid,
             text => $aLang.plugin.payment.bills.states.paid,
             name => 'paid',
-            url  => {router page="payments/{$oUserProfile->getLogin()}/bills/paid"}
+            url  => {router page="payment/{$oUserProfile->getLogin()}/bills/paid"}
         ]
     ]}
 
     {component "bs-nav" 
-        activeItem = 'not_paid'
+        activeItem = $sState
         bmods = "tabs"
         items = $aStates}
 
@@ -41,6 +41,7 @@
                         <td>{$oBill->getDateCreate()}</td>
                         <td>
                             {component "bs-button" 
+                                url   = {router page="payment/bill{$oBill->getId()}/choose-provider"}
                                 text  = $aLang.plugin.payment.bills.pay
                                 bmods = "outline-success sm" }
                         </td>
@@ -49,7 +50,7 @@
                 
             </tbody>
         </table>
-
+                <hr class="m-0">
       
     {else}
         {component "blankslate" 
