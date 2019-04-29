@@ -1,0 +1,63 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "e942c07ad67d745cff4c23f39d497b4a",
+    "content-hash": "dfe4b8d06d2254d9ccc83ab279c413f0",
+    "packages": [
+        {
+            "name": "idma/robokassa",
+            "version": "v1.0.0-beta4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/idma/robokassa.git",
+                "reference": "19ce0cd5643fb62cf2b268a87c383b6ee2987692"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/idma/robokassa/zipball/19ce0cd5643fb62cf2b268a87c383b6ee2987692",
+                "reference": "19ce0cd5643fb62cf2b268a87c383b6ee2987692",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Idma\\Robokassa\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "JhaoDa",
+                    "email": "jhaoda@gmail.com"
+                }
+            ],
+            "description": "PHP library for Robokassa payment system",
+            "homepage": "https://github.com/idma/robokassa",
+            "keywords": [
+                "idma",
+                "payment",
+                "robokassa"
+            ],
+            "time": "2017-09-28 05:07:32"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "idma/robokassa": 10
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

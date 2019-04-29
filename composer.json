@@ -1,0 +1,5 @@
+{
+    "require": {
+        "idma/robokassa": "v1.0.0-beta4"
+    }
+}

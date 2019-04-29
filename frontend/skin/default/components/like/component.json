@@ -1,0 +1,13 @@
+{
+    "name": "like",
+    "version": "1.0.0",
+    "dependencies":{
+        "bs-button":"*"
+    },
+    "templates":{
+        "remove":"like-remove.tpl"
+    },
+    "scripts": {
+        "like":"js/like.js"
+    }
+}
