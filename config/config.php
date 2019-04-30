@@ -10,10 +10,12 @@ $config['$root$']['db']['table']['payment_payment_payment'] = '___db.table.prefi
  */
 $config['$root$']['router']['page']['payment'] = 'PluginPayment_ActionPayment';
 
-$config['payments'] = [
-    'per_page' => 10,
+$config['bills'] = [
+    'per_page' => 5,
     'view_page_count' => 5
 ];
+
+
 
 $config['providers'] = [
     'robokassa' => [

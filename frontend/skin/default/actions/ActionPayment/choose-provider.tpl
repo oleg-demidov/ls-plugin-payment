@@ -10,5 +10,62 @@
                     
 {block 'layout_content'}
     
+    {capture name="bill"}
+    <table>
+        <tr>
+            <td class="pr-5">{lang "plugin.payment.bills.fields.number"}</td>
+            <td>{$oBill->getId()}</td>
+        </tr>
+        <tr>
+            <td class="pr-5">{lang "plugin.payment.bills.fields.description"}</td>
+            <td>{$oBill->getDescription()}</td>
+        </tr>
+        <tr>
+            <td class="pr-5">{lang "plugin.payment.bills.fields.date_create"}</td>
+            <td>{$oBill->getDateCreate()}</td>
+        </tr>
+        <tr>
+            <td class="pr-5">{lang "plugin.payment.bills.fields.state"}</td>
+            <td>{if  $oBill->isPaid()}
+                    <span class="text-success">{lang "plugin.payment.bills.states.paid"}</span>
+                {else}
+                    <span class="text-danger">{lang "plugin.payment.bills.states.not_paid"}</span>
+                {/if}
+            </td>
+        </tr>
+        <tr>
+            <td class="pr-5">{lang "plugin.payment.bills.fields.price"}</td>
+            <td>{$oBill->getPrice()} {lang "plugin.payment.currency.{$oBill->getCurrency()}"}</td>
+        </tr>
+            
+    </table>
+    {/capture}
     
+
+    {component "bs-card"
+        classes = "my-3"
+        content=[
+            [
+                type => 'header',
+                content => "Счет"
+            ],
+            [
+                type => 'body',
+                content => $smarty.capture.bill
+            ]
+        ]}
+    
+    
+    <h4>{lang "plugin.payment.choose_provider.h5"}</h4>
+            
+    <div class="d-flex mt-3 flex-column">
+        <div class="d-flex"> 
+            <a style="text-decoration: none;" class="text-secondary" href="{router page="payment/process/bill{$oBill->getId()}/robokassa"}"> 
+                {component "payment:provider"
+                    classes = "border rounded px-3 py-1"
+                    name    = "robokassa"
+                }
+            </a>
+        </div>
+    </div>
 {/block}
