@@ -35,8 +35,7 @@ class PluginPayment_ActionPayment extends ActionPlugin{
     protected function RegisterEvent() {
         
         $this->AddEventPreg( '/^[\w_-]+$/i', '/^bills$/i', '/^(paid|not_paid)?$/i', '/^(page([\d]+))?$/i', ['EventBills', 'settings']);
-        $this->AddEventPreg( '/^bill([\d]+)$/i', '/^choose-provider$/i', 'EventChooseProvider');
-        $this->AddEventPreg(  '/^process$/i', 'EventProcess');
+        $this->AddEventPreg(  '/^choose-provider$/i', 'EventChooseProvider');
     }
     
     public function EventBills($oUserProfile = null) {
@@ -91,52 +90,38 @@ class PluginPayment_ActionPayment extends ActionPlugin{
         $this->Viewer_Assign('sState', $sState);
         $this->Viewer_Assign('oUserProfile', $oUserProfile);
     }
-    
-    
-    public function EventChooseProvider() {
-        if(!$oBill = $this->PluginPayment_Payment_GetBillById($this->GetEventMatch(1))){
-            return $this->EventNotFound();
-        }
-        
-        if($oBill->isPaid()){
-            return $this->EventBillPaid($oBill);
-        }
-        
-        $this->Viewer_Assign('oBill', $oBill);
-        $this->SetTemplateAction('choose-provider');
-    }
-    
+     
     
     public function EventBillPaid($oBill) {
         $this->Viewer_Assign('oBill', $oBill);
         $this->SetTemplateAction('bill-paid');
     }
     
-    public function EventProcess(){
-       
+    public function EventChooseProvider(){
+        $oUserProfile = $this->User_GetUserCurrent();
         
-        if(!getRequest('bills')){
-            $this->Message_AddError($this->Lang_Get('plugin.payment.notice.error_choose_bill'));
-            return $this->EventBills($this->User_GetUserCurrent());
-        } 
-        
-        $this->SetTemplate(false);
-        
-        
-        if(!$oBill = $this->PluginPayment_Payment_GetBillById($this->GetParamEventMatch(0, 1))){
-            return $this->EventNotFound();
+        $aBillsIds = getRequest('bills')?getRequest('bills'):[0];
+                
+        if(!$aBills = $this->PluginPayment_Payment_GetBillItemsByFilter(['id in' => $aBillsIds])){
+            $this->Message_AddError($this->Lang_Get('plugin.payment.notice.error_choose_bill'), null, true);
+            Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
         }
         
-        if(!$oProvider = $this->PluginPayment_Payment_GetProvider($this->GetParam(1))){
-            return $this->EventNotFound();
+        $oPayment = Engine::GetEntity('PluginPayment_Payment_Payment');
+        $oPayment->setBills($aBills);
+        
+        if(!$oPayment->_Validate()){
+            $this->Message_AddError($oPayment->_getValidateError(), null, true);
+            Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
         }
         
-        $oPayment = Engine::GetEntity('PluginPayment_Payment_Payment', [
-            ''
-        ]);
+        if(!$oPayment->Save()){
+            $this->Message_AddError($this->Lang_Get('common.error'), null, true);
+            Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
+        }
         
-        $oPayment->setBill();
+        $this->Viewer_Assign('oPayment', $oPayment);
+        $this->SetTemplateAction('choose-provider');        
         
-        $oProvider->setBill($oBill);
     }
 }

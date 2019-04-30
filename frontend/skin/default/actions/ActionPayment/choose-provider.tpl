@@ -14,19 +14,19 @@
     <table>
         <tr>
             <td class="pr-5">{lang "plugin.payment.bills.fields.number"}</td>
-            <td>{$oBill->getId()}</td>
+            <td>{$oPayment->getId()}</td>
         </tr>
         <tr>
             <td class="pr-5">{lang "plugin.payment.bills.fields.description"}</td>
-            <td>{$oBill->getDescription()}</td>
+            <td>{$oPayment->getDescription()}</td>
         </tr>
         <tr>
             <td class="pr-5">{lang "plugin.payment.bills.fields.date_create"}</td>
-            <td>{$oBill->getDateCreate()}</td>
+            <td>{$oPayment->getDateCreate()}</td>
         </tr>
         <tr>
             <td class="pr-5">{lang "plugin.payment.bills.fields.state"}</td>
-            <td>{if  $oBill->isPaid()}
+            <td>{if  $oPayment->isPaid()}
                     <span class="text-success">{lang "plugin.payment.bills.states.paid"}</span>
                 {else}
                     <span class="text-danger">{lang "plugin.payment.bills.states.not_paid"}</span>
@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <td class="pr-5">{lang "plugin.payment.bills.fields.price"}</td>
-            <td>{$oBill->getPrice()} {lang "plugin.payment.currency.{$oBill->getCurrency()}"}</td>
+            <td>{$oPayment->getPrice()} {lang "plugin.payment.currency.{$oPayment->getCurrency()}"}</td>
         </tr>
             
     </table>

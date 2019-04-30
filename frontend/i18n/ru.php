@@ -17,7 +17,7 @@ return [
             'date_create' => 'Дата создания',
             'state' => 'Статус',
             'price' => 'Сумма'
-        ]
+        ],
     ],
     'nav_profile' => [
         'text' => 'Счета'
@@ -36,6 +36,7 @@ return [
         'RUB' => 'руб.'
     ],
     'notice' => [
-        'error_choose_bill' => 'Выберите счет для оплаты'
+        'error_choose_bill' => 'Выберите счет для оплаты',
+        'error_currency_not_valid' => 'Валюта выбранных счетов должна совпадать'
     ]
 ];
