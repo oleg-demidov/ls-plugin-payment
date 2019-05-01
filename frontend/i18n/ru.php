@@ -37,6 +37,7 @@ return [
     ],
     'notice' => [
         'error_choose_bill' => 'Выберите счет для оплаты',
-        'error_currency_not_valid' => 'Валюта выбранных счетов должна совпадать'
+        'error_currency_not_valid' => 'Валюта выбранных счетов должна совпадать',
+        'error_not_provider' => 'Provider %%provider%% не найден'
     ]
 ];

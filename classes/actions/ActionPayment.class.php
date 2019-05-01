@@ -36,6 +36,7 @@ class PluginPayment_ActionPayment extends ActionPlugin{
         
         $this->AddEventPreg( '/^[\w_-]+$/i', '/^bills$/i', '/^(paid|not_paid)?$/i', '/^(page([\d]+))?$/i', ['EventBills', 'settings']);
         $this->AddEventPreg(  '/^choose-provider$/i', 'EventChooseProvider');
+        $this->AddEventPreg(  '/^process$/i', '/^[\w_-]+$/i', 'EventProcess');
     }
     
     public function EventBills($oUserProfile = null) {
@@ -99,29 +100,25 @@ class PluginPayment_ActionPayment extends ActionPlugin{
     
     public function EventChooseProvider(){
         $oUserProfile = $this->User_GetUserCurrent();
-        
-        $aBillsIds = getRequest('bills')?getRequest('bills'):[0];
-                
-        if(!$aBills = $this->PluginPayment_Payment_GetBillItemsByFilter(['id in' => $aBillsIds])){
+                        
+        if(!$oBill = $this->PluginPayment_Payment_GetBillById(getRequest('bill'))){
             $this->Message_AddError($this->Lang_Get('plugin.payment.notice.error_choose_bill'), null, true);
             Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
         }
         
-        $oPayment = Engine::GetEntity('PluginPayment_Payment_Payment');
-        $oPayment->setBills($aBills);
-        
-        if(!$oPayment->_Validate()){
-            $this->Message_AddError($oPayment->_getValidateError(), null, true);
-            Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
-        }
-        
-        if(!$oPayment->Save()){
-            $this->Message_AddError($this->Lang_Get('common.error'), null, true);
-            Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
-        }
-        
-        $this->Viewer_Assign('oPayment', $oPayment);
+        $this->Viewer_Assign('oBill', $oBill);
         $this->SetTemplateAction('choose-provider');        
+    }
+    
+    public function EventProcess() {
+        if(!$oBill = $this->PluginPayment_Payment_GetBillById(getRequest('bill'))){
+            $this->Message_AddError($this->Lang_Get('plugin.payment.notice.error_choose_bill'), null, true);
+            Router::LocationAction('payment/'.$oUserProfile->getLogin().'/bills');
+        }        
         
+        if(!$oProvider = $this->PluginPayment_Payment_GetProvider($this->GetParam(0))){
+            $this->Message_AddError($this->Lang_Get('plugin.payment.notice.error_choose_bill', ['provider' => $this->GetParam(0)]));
+            return $this->EventChooseProvider();
+        }
     }
 }

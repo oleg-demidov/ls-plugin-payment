@@ -31,31 +31,23 @@
         items = $aStates}
 
     {if $aBills}
-        <form action="{router page="payment/process"}">
-            <table class="table mt-3 mb-0">
-                {foreach $aBills as $oBill}
-                    <tr>
-                        <th>{$oBill->getId()}</th>
-                        <td>{component "bs-form.checkbox" name="bills[]" value=$oBill->getId()}</td>
-                        <td>{$oBill->getDescription()}</td>
-                        <td>{$oBill->getDateCreate()}</td>
-                        <td>{$oBill->getPrice()} {lang "plugin.payment.currency.{$oBill->getCurrency()}"}</td>
-                        <td>
-                            {component "bs-button" 
-                                url   = {router page="payment/process/?bills[]={$oBill->getId()}"}
-                                text  = $aLang.plugin.payment.bills.pay
-                                bmods = "outline-success sm" }
-                        </td>
-                    </tr>
-                {/foreach}
-            </table>
-            <hr class="m-0">
-            {component "bs-button" 
-                classes = "mt-3"
-                bmods   = "success"
-                type    = "submit" 
-                text    = $aLang.plugin.payment.bills.pay}
-        </form>
+        <table class="table mt-3 mb-0">
+            {foreach $aBills as $oBill}
+                <tr>
+                    <th>{$oBill->getId()}</th>
+                    <td>{$oBill->getDescription()}</td>
+                    <td>{$oBill->getDateCreate()}</td>
+                    <td>{$oBill->getPrice()} {lang "plugin.payment.currency.{$oBill->getCurrency()}"}</td>
+                    <td>
+                        {component "bs-button" 
+                            url   = {router page="payment/choose-provider/?bill={$oBill->getId()}"}
+                            text  = $aLang.plugin.payment.bills.pay
+                            bmods = "outline-success sm" }
+                    </td>
+                </tr>
+            {/foreach}
+        </table>
+        <hr class="m-0">
         
       
         {component 'bs-pagination' 
