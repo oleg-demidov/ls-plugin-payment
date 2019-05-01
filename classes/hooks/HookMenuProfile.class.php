@@ -20,10 +20,10 @@ class PluginPayment_HookMenuProfile extends Hook{
         $oMenuUser = $this->Menu_Get('user');        
         
         $oItem = Engine::GetEntity("ModuleMenu_EntityItem", [
-            'name' => 'trash',
+            'name' => 'bills',
             'title' => 'plugin.payment.nav_profile.text',
-            'url' => 'payment/'.$oUser->getLogin().'/trash',
-            'count' => $this->PluginPayment_Payment_GetCountFromProductByFilter(['user_id' => $oUser->getId(), "date_payment" => null])
+            'url' => 'payment/'.$oUser->getLogin().'/bills',
+            'count' => $this->PluginPayment_Payment_GetCountFromBillByFilter(['user_id' => $oUser->getId(), "date_payment" => null])
         ]);
         
         $oMenuProfile->appendChild($oItem);
