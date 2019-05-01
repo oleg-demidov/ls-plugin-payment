@@ -34,11 +34,11 @@ class PluginPayment_ActionPayment extends ActionPlugin{
     }
     protected function RegisterEvent() {
         
-        $this->AddEventPreg( '/^[\w_-]+$/i', '/^bills$/i', '/^(paid|not_paid)?$/i', '/^(page([\d]+))?$/i', ['EventBills', 'settings']);
+        $this->AddEventPreg( '/^[\w_-]+$/i', '/^trash$/i', '/^(paid|not_paid)?$/i', '/^(page([\d]+))?$/i', ['EventTrash', 'settings']);
         $this->AddEventPreg(  '/^choose-provider$/i', 'EventChooseProvider');
     }
     
-    public function EventBills($oUserProfile = null) {
+    public function EventTrash($oUserProfile = null) {
         $sState = $this->GetParam(1, 'not_paid');
         
         $iPage = $this->GetParamEventMatch(2,2)?$this->GetParamEventMatch(2,2):1;
@@ -49,7 +49,7 @@ class PluginPayment_ActionPayment extends ActionPlugin{
         
         $aFilter = [
             'user_id' => $oUserProfile->getId(),
-            '#page' => [$iPage, Config::Get('plugin.payment.bills.per_page')],
+            '#page' => [$iPage, Config::Get('plugin.payment.products.per_page')],
             '#order' => ['date_create' => 'desc']
         ];
         
@@ -63,29 +63,29 @@ class PluginPayment_ActionPayment extends ActionPlugin{
         
         
         
-        $aBills = $this->PluginPayment_Payment_GetBillItemsByFilter($aFilter);
+        $aProducts = $this->PluginPayment_Payment_GetProductItemsByFilter($aFilter);
         
         $aPaging = $this->Viewer_MakePaging(
-            $aBills['count'], 
+            $aProducts['count'], 
             $iPage, 
-            Config::Get('plugin.payment.bills.per_page'), 
-            Config::Get('plugin.payment.bills.view_page_count'), 
-            Router::GetPath('payment/'.$oUserProfile->getLogin().'/bills/'.$sState)
+            Config::Get('plugin.payment.products.per_page'), 
+            Config::Get('plugin.payment.products.view_page_count'), 
+            Router::GetPath('payment/'.$oUserProfile->getLogin().'/trash/'.$sState)
         ); 
         
-        $iCountPaid = $this->PluginPayment_Payment_GetCountFromBillByFilter([
+        $iCountPaid = $this->PluginPayment_Payment_GetCountFromProductByFilter([
             '#where' => [
                 't.date_payment IS NOT NULL AND 1=?d' => [1]
             ]
         ]);
-        $iCountNotPaid = $this->PluginPayment_Payment_GetCountFromBillByFilter(['date_payment' => null]);
+        $iCountNotPaid = $this->PluginPayment_Payment_GetCountFromProductByFilter(['date_payment' => null]);
         
-        $this->Menu_Get('profile')->setActiveItem('bills');
-        $this->SetTemplateAction('bills');
+        $this->Menu_Get('profile')->setActiveItem('tarsh');
+        $this->SetTemplateAction('tarsh');
         
         $this->Viewer_Assign('iCountPaid', $iCountPaid);
         $this->Viewer_Assign('iCountNotPaid', $iCountNotPaid);
-        $this->Viewer_Assign('aBills', $aBills['collection']);
+        $this->Viewer_Assign('aProducts', $aProducts['collection']);
         $this->Viewer_Assign('aPaging', $aPaging);
         $this->Viewer_Assign('sState', $sState);
         $this->Viewer_Assign('oUserProfile', $oUserProfile);

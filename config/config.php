@@ -2,15 +2,15 @@
 /**
  * Таблица БД
  */
+$config['$root$']['db']['table']['payment_payment_product'] = '___db.table.prefix___payment_product';
 $config['$root$']['db']['table']['payment_payment_bill'] = '___db.table.prefix___payment_bill';
-$config['$root$']['db']['table']['payment_payment_payment'] = '___db.table.prefix___payment_payment';
 
 /**
  * Роутинг
  */
 $config['$root$']['router']['page']['payment'] = 'PluginPayment_ActionPayment';
 
-$config['bills'] = [
+$config['products'] = [
     'per_page' => 5,
     'view_page_count' => 5
 ];

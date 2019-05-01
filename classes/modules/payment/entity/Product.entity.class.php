@@ -1,6 +1,6 @@
 <?php
 
-class PluginPayment_ModulePayment_EntityBill extends EntityORM
+class PluginPayment_ModulePayment_EntityProduct extends EntityORM
 {
     const STATE_PAID = 2;
     const STATE_NOT_PAID = 1;

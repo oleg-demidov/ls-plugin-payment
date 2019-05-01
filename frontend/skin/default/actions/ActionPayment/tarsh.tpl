@@ -5,7 +5,7 @@
 
 
 {block 'layout_page_title'}
-    <h1 class="page-header">{lang "plugin.payment.bills.title"}</h1>
+    <h1 class="page-header">{lang "plugin.payment.trash.title"}</h1>
 {/block}
                     
 {block 'layout_content'}
@@ -13,15 +13,15 @@
     {$aStates = [
         [
             count => $iCountNotPaid,
-            text => $aLang.plugin.payment.bills.states.not_paid,
+            text => $aLang.plugin.payment.trash.states.not_paid,
             name => 'not_paid',
-            url  => {router page="payment/{$oUserProfile->getLogin()}/bills/not_paid"}
+            url  => {router page="payment/{$oUserProfile->getLogin()}/trash/not_paid"}
         ],
         [
             count => $iCountPaid,
-            text => $aLang.plugin.payment.bills.states.paid,
+            text => $aLang.plugin.payment.trash.states.paid,
             name => 'paid',
-            url  => {router page="payment/{$oUserProfile->getLogin()}/bills/paid"}
+            url  => {router page="payment/{$oUserProfile->getLogin()}/trash/paid"}
         ]
     ]}
 
@@ -30,20 +30,20 @@
         bmods = "tabs"
         items = $aStates}
 
-    {if $aBills}
+    {if $aProducts}
         <form action="{router page="payment/process"}">
             <table class="table mt-3 mb-0">
-                {foreach $aBills as $oBill}
+                {foreach $aProducts as $oProduct}
                     <tr>
-                        <th>{$oBill->getId()}</th>
-                        <td>{component "bs-form.checkbox" name="bills[]" value=$oBill->getId()}</td>
-                        <td>{$oBill->getDescription()}</td>
-                        <td>{$oBill->getDateCreate()}</td>
-                        <td>{$oBill->getPrice()} {lang "plugin.payment.currency.{$oBill->getCurrency()}"}</td>
+                        <th>{$oProduct->getId()}</th>
+                        <td>{component "bs-form.checkbox" name="products[]" value=$oProduct->getId()}</td>
+                        <td>{$oProduct->getDescription()}</td>
+                        <td>{$oProduct->getDateCreate()}</td>
+                        <td>{$oProduct->getPrice()} {lang "plugin.payment.currency.{$oProduct->getCurrency()}"}</td>
                         <td>
                             {component "bs-button" 
-                                url   = {router page="payment/process/?bills[]={$oBill->getId()}"}
-                                text  = $aLang.plugin.payment.bills.pay
+                                url   = {router page="payment/process/?products[]={$oProduct->getId()}"}
+                                text  = $aLang.plugin.payment.trash.pay
                                 bmods = "outline-success sm" }
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
                 classes = "mt-3"
                 bmods   = "success"
                 type    = "submit" 
-                text    = $aLang.plugin.payment.bills.pay}
+                text    = $aLang.plugin.payment.trash.pay}
         </form>
         
       
@@ -68,6 +68,6 @@
     {else}
         {component "blankslate" 
             classes = "mt-3"
-            text    = $aLang.plugin.payment.bills.blankslate.text}
+            text    = $aLang.plugin.payment.trash.blankslate.text}
     {/if}
 {/block}
