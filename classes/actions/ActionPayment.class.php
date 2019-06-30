@@ -31,6 +31,7 @@ class PluginPayment_ActionPayment extends ActionPlugin{
     
     protected function RegisterEvent() {
        $this->AddEventPreg( '/^choose-provider$/i', 'EventChooseProvider');
+
     }
     
     
@@ -38,13 +39,15 @@ class PluginPayment_ActionPayment extends ActionPlugin{
         if(!$oPayment = $this->PluginPayment_Payment_GetPaymentById(getRequest('payment_id'))){
             $this->Message_AddError($this->Lang_Get('plugin.payment.notice.error_choose_bill'));
             Router::LocationAction('/');
+
         }
-        
-        $this->Viewer_Assign('oPayment', $oPayment);
-        $this->SetTemplateAction('choose-provider');        
-        
     }
     
     public function EventShutdown() {
     }
+
+    public function Init() {
+        
+    }
+
 }

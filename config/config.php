@@ -10,6 +10,7 @@ $config['$root$']['db']['table']['payment_payment'] = '___db.table.prefix___paym
 $config['$root$']['router']['page']['payment'] = 'PluginPayment_ActionPayment';
 
 
+
 $config['providers'] = [
     'robokassa' => [
         'merchant' => '',
